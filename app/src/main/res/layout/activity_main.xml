@@ -24,7 +24,7 @@
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="176dp"
         android:ems="10"
         android:hint="Distance"
         android:inputType="textPersonName"
@@ -38,7 +38,6 @@
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="Location"
         android:inputType="textPersonName"
@@ -46,13 +45,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryDropdown" />
 
     <TextView
         android:id="@+id/titleHome"
         android:layout_width="325dp"
         android:layout_height="54dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="28dp"
         android:text="Business Search"
         android:textColor="@color/black"
         android:textSize="30dp"
@@ -63,7 +62,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/resultTitle"
+        android:layout_width="325dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="24dp"
+        android:text="Results"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/submitButton" />
+
+    <TextView
+        android:id="@+id/catTitle"
         android:layout_width="125dp"
         android:layout_height="26dp"
         android:layout_marginTop="16dp"
@@ -74,13 +87,46 @@
         app:layout_constraintTop_toBottomOf="@+id/distance" />
 
     <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="173dp"
+        android:id="@+id/categoryDropdown"
+        android:layout_width="174dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.113"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/catTitle"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="108dp"
+        android:text="Clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detectLocation" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text="Submit"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detectLocation" />
+
+    <CheckBox
+        android:id="@+id/detectLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:text="Auto-detect my location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
