@@ -2,29 +2,36 @@ package com.example.yelp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
     public String longitude = "";
     public Button submitButton;
     public Button clearButton;
-    public EditText keyword;
+    public AutoCompleteTextView keyword;
     public EditText distance;
     public EditText location;
     public CheckBox detectLocation;
     public Spinner categorySelected ;
 //    public Object[] categoryObject;
+    public TextView catTitle;
+    public List<String> keywordDropdown = new ArrayList<String>();
+    public ArrayAdapter<String> autocompleteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +60,25 @@ public class MainActivity extends AppCompatActivity {
         location = findViewById(R.id.location);
         detectLocation = findViewById(R.id.detectLocation);
         categorySelected =  findViewById(R.id.categoryDropdown);
+        catTitle = findViewById(R.id.catTitle);
+
+        String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};//Creating the instance of ArrayAdapter containing list of fruit names
+        autocompleteAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, keywordDropdown);
+//        Instance of Autocomplete
+//        keyword.setThreshold(1);//will start working from first character
+        keyword.setAdapter(autocompleteAdapter);//setting the adapter data into the AutoCompleteTextView
+
+        keyword.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //retrieve data s
+            }
+
+            public void afterTextChanged(Editable s) {
+                retrieveData(s);
+            }
+        });
 
         String[] items = new String[]
             {
@@ -88,9 +117,6 @@ public class MainActivity extends AppCompatActivity {
                 if( TextUtils.isEmpty(keyword.getText())){
                     keyword.setError( "This field is required!" );
                 }
-                else if(TextUtils.isEmpty(distance.getText())){
-                    distance.setError( "This field is required!" );
-                }
                 else if(TextUtils.isEmpty(location.getText()) && location.isShown()){
                     location.setError( "This field is required!" );
                 }
@@ -99,6 +125,51 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+//        Required Field Symbol
+        showEditTextsAsMandatory ( keyword, location);
+        showTextViewsAsMandatory ( catTitle);
+    }
+
+    protected void retrieveData(Editable s){
+        RequestQueue requestQueue;
+        StringRequest stringRequest;
+        // RequestQueue initialized
+        requestQueue = Volley.newRequestQueue(this);
+        List<String> items = new ArrayList<String>();
+        String text = s.toString();
+        String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/autocomplete?text="+text;
+
+        Log.d("auto", url);
+        // String Request initialized
+        stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject autocompleteResponse = new JSONObject(response);
+                    JSONArray results = autocompleteResponse.getJSONArray("response");
+                    for (int i = 0; i<results.length(); i++){
+                        items.add(results.getJSONObject(i).getString("text"));
+                    }
+
+                    autocompleteAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.select_dialog_item, items);
+                    keywordDropdown = items;
+                    Log.d("auto", keywordDropdown.toString());
+//                    autocompleteAdapter.notifyDataSetChanged();
+                    keyword.setAdapter(autocompleteAdapter);
+//                    keyword.setThreshold(1);
+                    keyword.setAdapter(autocompleteAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "No results found!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
     }
 
     protected void getTable(String keywordValid, String distanceValid, String locationValid){
@@ -140,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject tableData = new JSONObject(response);
-//                    Log.d( "Tabledata :" , tableData.getString("response") + url);
+                    Log.d( "current :" , tableData.getString("response") + url);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -209,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue;
         StringRequest stringRequest;
         String url = "https://ipinfo.io?token=196ec65b0b0406";
-        // RequestQueue initializedr
+        // RequestQueue initialized
         requestQueue = Volley.newRequestQueue(this);
 
         // String Request initialized
@@ -234,10 +305,30 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                latitude = "";
+                longitude = "";
+                Toast.makeText(MainActivity.this, "Location Not Detected!", Toast.LENGTH_SHORT).show();
             }
         });
 
         requestQueue.add(stringRequest);
 
+    }
+
+//    Methods to insert mandatory symbol
+//        *
+    protected void showEditTextsAsMandatory(EditText... ets){
+        for (EditText et: ets){
+            String hint = et.getHint ().toString ();
+
+            et.setHint ( Html.fromHtml ( hint + " <font color=\"#ff0000\">" + "* " + "</font>"  ) );
+        }
+    }
+
+    protected void showTextViewsAsMandatory(TextView... tvs){
+        for ( TextView tv : tvs ){
+            String text = tv.getText ().toString ();
+            tv.setText ( Html.fromHtml (  text + " <font color=\"#ff0000\">" + "* " + "</font>" ) );
+        }
     }
 }
