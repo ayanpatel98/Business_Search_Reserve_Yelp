@@ -1,8 +1,9 @@
 package com.example.yelp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.yelp.adapter.RecyclerViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     public List<String> keywordDropdown = new ArrayList<String>();
     public ArrayAdapter<String> autocompleteAdapter;
 
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter recyclerViewAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         detectLocation = findViewById(R.id.detectLocation);
         categorySelected =  findViewById(R.id.categoryDropdown);
         catTitle = findViewById(R.id.catTitle);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};//Creating the instance of ArrayAdapter containing list of fruit names
         autocompleteAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, keywordDropdown);
@@ -93,7 +102,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         categorySelected.setAdapter(adapter);
 
-
+        if (detectLocation.isChecked()){
+//                Hide the Location Field
+            location.getText().clear();
+            location.setVisibility(View.INVISIBLE);
+        }
 //        to know whether the autodetect is checked or not
         detectLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +190,15 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest;
         String catPayload = "";
         String currentCategory = categorySelected.getSelectedItem().toString();
-        int radiusPayload = Integer.parseInt(distance.getText().toString())*1609;
+        String radiusPayload;
+        ArrayList<JSONObject> businesses = new ArrayList<JSONObject>();
+
+        if (!distance.getText().toString().trim().isEmpty()){
+            radiusPayload = String.valueOf(Integer.parseInt(distance.getText().toString().trim())*1609);
+        }
+        else{
+            radiusPayload = "";
+        }
         switch (currentCategory) {
             case "Default":
                 catPayload = "All";
@@ -198,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
                 catPayload = "professional";
                 break;
         }
-        Log.d("current", keyword.getText().toString()+radiusPayload+longitude+latitude+catPayload);
 
         String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses/search?term="+keyword.getText().toString()+"&latitude="+latitude+"&longitude="+longitude+"&categories="+catPayload+"&radius="+radiusPayload;
 
@@ -211,7 +231,18 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject tableData = new JSONObject(response);
-                    Log.d( "current :" , tableData.getString("response") + url);
+                    JSONArray responseData = tableData.getJSONArray("response");
+                    if (responseData.length()>0){
+                        for (int i=0; i<responseData.length();i++){
+                            businesses.add(responseData.getJSONObject(i));
+                        }
+                        Log.d( "current :" , businesses.toString() + url);
+                        recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, businesses);
+                        recyclerView.setAdapter(recyclerViewAdapter);
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "No Records Found!", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
