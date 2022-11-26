@@ -1,9 +1,7 @@
 package com.example.yelp.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yelp.R;
+import com.example.yelp.Business_Details;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -42,6 +40,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         JSONObject business = businessList.get(position);
+
+
         holder.srNo.setText(String.valueOf(position+1));
         try {
             holder.busiName.setText(business.getString("name"));
@@ -83,6 +83,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             srNo = itemView.findViewById(R.id.srNo);
             busiName = itemView.findViewById(R.id.busiName);
             rating = itemView.findViewById(R.id.rating);
@@ -92,7 +93,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, "Row Clicked", Toast.LENGTH_SHORT).show();
+//            To Extract the id of the business
+//            Get the position of the view first and then find the business in the business array
+            int position_business = getBindingAdapterPosition();
+            JSONObject business = businessList.get(position_business);
+            try {
+                String businessID = business.getString("id");
+//                Toast.makeText(context, businessID, Toast.LENGTH_SHORT).show();
+                Intent businessIntent = new Intent(context, Business_Details.class);
+                businessIntent.putExtra("businessID", businessID);
+                context.startActivity(businessIntent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+//            Log.d("click", String.valueOf(business));
         }
     }
 }

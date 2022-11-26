@@ -54,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!detectLocation.isChecked()){
+            latitude = "";
+            longitude = "";
+//                    Make location when auto detect is unchecked
+            location.setVisibility(View.VISIBLE);
+        }
+        else{
+//                Hide the Location Field
+            location.getText().clear();
+            location.setVisibility(View.INVISIBLE);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d( "current :" , businesses.toString() + url);
                         recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, businesses);
                         recyclerView.setAdapter(recyclerViewAdapter);
+                        recyclerView.setNestedScrollingEnabled(false);
                     }
                     else {
                         Toast.makeText(MainActivity.this, "No Records Found!", Toast.LENGTH_SHORT).show();
