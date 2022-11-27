@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,10 +83,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            srNo = itemView.findViewById(R.id.srNo);
-            busiName = itemView.findViewById(R.id.busiName);
-            rating = itemView.findViewById(R.id.rating);
-            distanceTo = itemView.findViewById(R.id.distanceTo);
+            srNo = itemView.findViewById(R.id.name);
+            busiName = itemView.findViewById(R.id.rating);
+            rating = itemView.findViewById(R.id.review);
+            distanceTo = itemView.findViewById(R.id.date);
             busiImage = itemView.findViewById(R.id.busiImage);
         }
 

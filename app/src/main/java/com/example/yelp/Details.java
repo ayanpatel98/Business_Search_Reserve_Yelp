@@ -1,13 +1,22 @@
 package com.example.yelp;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,11 +25,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.util.Objects;
 
 
@@ -44,6 +55,7 @@ public class Details extends Fragment {
     private TextView phNoValue;
     private TextView statusValue;
     private TextView visitYelpValue;
+    private LinearLayout photoContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,14 +63,14 @@ public class Details extends Fragment {
         RequestQueue requestQueue;
         StringRequest stringRequest;
         String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses?b_id="+this.businessID;
-        View v = inflater.inflate(R.layout.fragment_details,container,true);
-        addressValue = v.findViewById(R.id.addressValue);
-        categoryValue = v.findViewById(R.id.categoryValue);
-        priceValue = v.findViewById(R.id.priceValue);
-        phNoValue = v.findViewById(R.id.phNoValue);
-        statusValue = v.findViewById(R.id.statusValue);
-        visitYelpValue = v.findViewById(R.id.visitYelpMore);
-
+        View view = inflater.inflate(R.layout.fragment_details,container,true);
+        addressValue = view.findViewById(R.id.addressValue);
+        categoryValue = view.findViewById(R.id.categoryValue);
+        priceValue = view.findViewById(R.id.priceValue);
+        phNoValue = view.findViewById(R.id.phNoValue);
+        statusValue = view.findViewById(R.id.statusValue);
+        visitYelpValue = view.findViewById(R.id.visitYelpMore);
+        photoContainer = view.findViewById(R.id.photoContainer);
 
         // RequestQueue initialized
         requestQueue = Volley.newRequestQueue(requireContext());
@@ -76,15 +88,58 @@ public class Details extends Fragment {
                     category = getCategories(details_only.getJSONArray("categories"));
                     disp_url = details_only.getString("more_info");
                     photos_urls = details_only.getJSONArray("photos");
-                    Log.d("all_DAta", address+priceRange+phNo+status+category+disp_url+photos_urls.toString());
 
-                    addressValue.setText(address);
-                    priceValue.setText(priceRange);
-                    phNoValue.setText(phNo);
-                    statusValue.setText(status);
-                    categoryValue.setText(category);
-                    visitYelpValue.setText("Business Link");
-                    Log.d("all_DAta", addressValue.getText().toString());
+                    if (address.equals("")) {
+                        addressValue.setText("N/A");
+                    } else {
+                        addressValue.setText(address);
+                    }
+
+                    if (priceRange.equals("")) {
+                        priceValue.setText("N/A");
+                    } else {
+                        priceValue.setText(priceRange);
+                    }
+
+                    if (phNo.equals("")) {
+                        phNoValue.setText("N/A");
+                    } else {
+                        phNoValue.setText(phNo);
+                    }
+
+                    if (status.equals("noStatus")) {
+                        statusValue.setText("N/A");
+                    } else if (status=="true") {
+                        statusValue.setText("Open");
+                        statusValue.setTextColor(Color.GREEN);
+                    } else if (status=="false") {
+                        statusValue.setText("Closed");
+                        statusValue.setTextColor(Color.RED);
+                    }
+
+                    if (category.equals("")) {
+                        categoryValue.setText("N/A");
+                    } else {
+                        categoryValue.setText(category);
+                    }
+                    // method to redirect to provided link
+                    visitYelpValue.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(disp_url));
+                            startActivity(browserIntent);
+                        }
+                    });
+
+                    for(int i=0; i<photos_urls.length();i++){
+                        ImageView iv = new ImageView(getContext());
+                        Picasso.get().load(photos_urls.getString(i)).into(iv);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(800, 1000);
+                        lp.setMargins(100, 0, 100, 0);
+                        lp.gravity = Gravity.CENTER;
+                        iv.setLayoutParams(lp);
+                        photoContainer.addView(iv);
+                    }
 
 
                 } catch (JSONException e) {
@@ -99,10 +154,11 @@ public class Details extends Fragment {
 
         requestQueue.add(stringRequest);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details, container, false);
+        return view;
     }
 
-//    Get Address in the form of string
+
+    //    Get Address in the form of string
     protected String getAddress(JSONArray address) throws JSONException {
         String new_address = "";
         for (int i =0; i<address.length();i++){

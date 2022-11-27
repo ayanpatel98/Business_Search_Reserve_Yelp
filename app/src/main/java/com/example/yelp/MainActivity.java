@@ -65,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
             location.setVisibility(View.VISIBLE);
         }
         else{
-//                Hide the Location Field
-            location.getText().clear();
-            location.setVisibility(View.INVISIBLE);
+            setFromIpInfo();
         }
     }
 
