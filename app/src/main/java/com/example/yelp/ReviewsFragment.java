@@ -1,5 +1,6 @@
 package com.example.yelp;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class ReviewsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecycViewReviewAdapter recycViewReviewAdapter;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +75,6 @@ public class ReviewsFragment extends Fragment {
 
         requestQueue.add(stringRequest);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reviews, container, false);
+        return view;
     }
 }

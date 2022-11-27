@@ -31,14 +31,12 @@ public class RecycViewReviewAdapter  extends RecyclerView.Adapter<RecycViewRevie
     @NonNull
     @Override
     public RecycViewReviewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("len", "len1");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_row, parent, true);
+        View view = LayoutInflater.from(this.context).inflate(R.layout.review_row, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecycViewReviewAdapter.ViewHolder holder, int position) {
-        Log.d("len", "len");
         try {
             current_review = reviewsList.getJSONObject(position);
         } catch (JSONException e) {
