@@ -63,6 +63,7 @@ public class RecycViewReviewAdapter  extends RecyclerView.Adapter<RecycViewRevie
 
         try {
             holder.date.setText(current_review.getString("time_created"));
+            Log.d("review",current_review.getString("time_created"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
