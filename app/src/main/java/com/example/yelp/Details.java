@@ -1,5 +1,6 @@
 package com.example.yelp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +43,7 @@ public class Details extends Fragment {
     public Details(String businessID) {
         this.businessID = businessID;
     }
+    private String name;
     private String address;
     private String priceRange;
     private String phNo;
@@ -55,6 +58,7 @@ public class Details extends Fragment {
     private TextView phNoValue;
     private TextView statusValue;
     private TextView visitYelpValue;
+    private Button button;
     private LinearLayout photoContainer;
 
     @Override
@@ -88,6 +92,7 @@ public class Details extends Fragment {
                     category = getCategories(details_only.getJSONArray("categories"));
                     disp_url = details_only.getString("more_info");
                     photos_urls = details_only.getJSONArray("photos");
+                    name = details_only.getString("name");
 
                     if (address.equals("")) {
                         addressValue.setText("N/A");
@@ -153,6 +158,43 @@ public class Details extends Fragment {
         });
 
         requestQueue.add(stringRequest);
+
+
+
+        button = view.findViewById(R.id.button);
+
+        // add listener to button
+        button.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                // Create custom dialog object
+                final Dialog dialog = new Dialog(getContext());
+                // Include reserve_dialog.xml file
+                dialog.setContentView(R.layout.reserve_dialog);
+                // Set dialog title
+                dialog.setTitle("Custom Dialog");
+
+                // set values for custom dialog components - text, image and button
+                TextView text = (TextView) dialog.findViewById(R.id.textDialog);
+                text.setText(name);
+
+                dialog.show();
+
+                Button declineButton = (Button) dialog.findViewById(R.id.declineButton);
+                // if decline button is clicked, close the custom dialog
+                declineButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Close dialog
+                        dialog.dismiss();
+                    }
+                });
+
+
+            }
+
+        });
+
         // Inflate the layout for this fragment
         return view;
     }

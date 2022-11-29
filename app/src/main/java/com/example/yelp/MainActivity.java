@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
         String text = s.toString();
         String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/autocomplete?text="+text;
 
-        Log.d("auto", url);
         // String Request initialized
         stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -250,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
                         for (int i=0; i<responseData.length();i++){
                             businesses.add(responseData.getJSONObject(i));
                         }
-                        Log.d( "current :" , businesses.toString() + url);
                         recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, businesses);
                         recyclerView.setAdapter(recyclerViewAdapter);
                         recyclerView.setNestedScrollingEnabled(false);
@@ -311,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("error", String.valueOf(error));
+
                 }
             });
 

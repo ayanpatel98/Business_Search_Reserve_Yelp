@@ -2,6 +2,7 @@ package com.example.yelp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.yelp.R;
 import com.example.yelp.Business_Details;
 import com.squareup.picasso.Picasso;
@@ -97,15 +104,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             int position_business = getBindingAdapterPosition();
             JSONObject business = businessList.get(position_business);
             try {
+                RequestQueue requestQueue;
+                StringRequest stringRequest;
+                // Inflate the layout for this fragment
                 String businessID = business.getString("id");
-//                Toast.makeText(context, businessID, Toast.LENGTH_SHORT).show();
-                Intent businessIntent = new Intent(context, Business_Details.class);
-                businessIntent.putExtra("businessID", businessID);
-                context.startActivity(businessIntent);
+                String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses?b_id="+businessID;
+                // RequestQueue initialized
+                requestQueue = Volley.newRequestQueue(view.getContext());
+
+                // String Request initialized
+                stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject business_details_json = new JSONObject(response);
+//                            JSONObject map_only =  business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates");
+                            String lati = business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates").getString("latitude");
+                            String longi = business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates").getString("longitude");
+//                          Toast.makeText(context, businessID, Toast.LENGTH_SHORT).show();
+                            Intent businessIntent = new Intent(context, Business_Details.class);
+                            businessIntent.putExtra("businessID", businessID);
+                            businessIntent.putExtra("latitude", lati);
+                            businessIntent.putExtra("longitude", longi);
+                            context.startActivity(businessIntent);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+
+                requestQueue.add(stringRequest);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            Log.d("click", String.valueOf(business));
         }
     }
 }

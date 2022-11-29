@@ -33,6 +33,8 @@ public class Business_Details extends AppCompatActivity {
     public ViewPager2 viewpager;
     Intent businessIntent;
     String businessID;
+    String lati;
+    String longi;
     ArrayList<JSONObject> details_map_reviews;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +47,14 @@ public class Business_Details extends AppCompatActivity {
 //        Get the ID of the corresponding business
         businessIntent = getIntent();
         businessID = businessIntent.getStringExtra("businessID");
+        lati = businessIntent.getStringExtra("latitude");
+        longi = businessIntent.getStringExtra("longitude");
 
         busiTabLayout = findViewById(R.id.busiTabLayout);
         viewpager = findViewById(R.id.busiViewpager);
 
 //        call all the data and sent prepare the data to send to all 3 fragments from business_details actvity
-        FragmentStateAdapter vpAdapter = new VPAdapter(this, businessID);
+        FragmentStateAdapter vpAdapter = new VPAdapter(this, businessID, lati, longi);
         viewpager.setAdapter(vpAdapter);
         new TabLayoutMediator(busiTabLayout, viewpager, ((tab, position)-> tab.setText(arr[position]))).attach();
 

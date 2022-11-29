@@ -31,65 +31,69 @@ import org.json.JSONObject;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     private String businessID;
-    private double latitude;
-    private double longitude;
+    private String latitude;
+    private String longitude;
 //    private FragmentContainerView maps;
     private GoogleMap mMap;
 
-    public MapFragment(String businessID) {
+    public MapFragment(String businessID, String lati, String longi) {
         this.businessID = businessID;
+        this.latitude = lati;
+        this.longitude = longi;
+        Log.d("construct", this.latitude+this.longitude);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map,container,true);
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.mapView);
-        mapFragment.getMapAsync(this);
+//        View view = inflater.inflate(R.layout.fragment_map,container,true);
+//        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
 
-        RequestQueue requestQueue;
-        StringRequest stringRequest;
-        String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses?b_id="+this.businessID;
-        // RequestQueue initialized
-        requestQueue = Volley.newRequestQueue(requireContext());
-
-        // String Request initialized
-        stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject business_details_json = new JSONObject(response);
-                    JSONObject map_only =  business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates");
-                    latitude = map_only.getDouble("latitude");
-                    longitude = map_only.getDouble("longitude");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-
-        requestQueue.add(stringRequest);
+////        RequestQueue requestQueue;
+////        StringRequest stringRequest;
+////        String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses?b_id="+this.businessID;
+////        // RequestQueue initialized
+////        requestQueue = Volley.newRequestQueue(requireContext());
+////
+////        // String Request initialized
+////        stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+////            @Override
+////            public void onResponse(String response) {
+////                try {
+////                    JSONObject business_details_json = new JSONObject(response);
+////                    JSONObject map_only =  business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates");
+////                    latitude = map_only.getDouble("latitude");
+////                    longitude = map_only.getDouble("longitude");
+////
+////                } catch (JSONException e) {
+////                    e.printStackTrace();
+////                }
+////            }
+////        }, new Response.ErrorListener() {
+////            @Override
+////            public void onErrorResponse(VolleyError error) {
+////            }
+////        });
+//
+//        requestQueue.add(stringRequest);
         // Inflate the layout for this fragment
-        return view;
+        return null;
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 //        map = googleMap;
-        Log.d("map", String.valueOf(latitude) +" "+ String.valueOf(longitude));
+//        Log.d("map", String.valueOf(latitude) +" "+ String.valueOf(longitude));
+        Log.d("map", this.latitude +" "+ this.longitude);
 //        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(latitude, longitude);
+        LatLng sydney = new LatLng(Double.parseDouble(this.latitude), Double.parseDouble(this.longitude));
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 

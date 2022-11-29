@@ -16,10 +16,14 @@ import com.example.yelp.ReviewsFragment;
 
 public class VPAdapter extends FragmentStateAdapter {
     String businessID;
+    String lati;
+    String longi;
 
-    public VPAdapter(@NonNull FragmentActivity fragmentActivity, String businessID) {
+    public VPAdapter(@NonNull FragmentActivity fragmentActivity, String businessID, String lati, String longi) {
         super(fragmentActivity);
         this.businessID = businessID;
+        this.lati = lati;
+        this.longi = longi;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class VPAdapter extends FragmentStateAdapter {
                 return new Details(this.businessID);
             case 1:
 //                Log.d("vp", "1");
-                return new MapFragment(this.businessID);
+                return new MapFragment(this.businessID, this.lati, this.longi);
             case 2:
 //                Log.d("vp", "2");
                 return new ReviewsFragment(this.businessID);
