@@ -1,6 +1,8 @@
 package com.example.yelp;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,18 +10,20 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,8 +37,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URI;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class Details extends Fragment {
@@ -61,9 +66,17 @@ public class Details extends Fragment {
     private Button button;
     private LinearLayout photoContainer;
 
+    private EditText emailValue;
+    private EditText dateValue;
+    private EditText timeValue;
+
+    private boolean emailValid = false;
+    private boolean timeValid = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         RequestQueue requestQueue;
         StringRequest stringRequest;
         String url = "https://api-dot-business-search-reserve-081998.uw.r.appspot.com/businesses?b_id="+this.businessID;
@@ -170,22 +183,116 @@ public class Details extends Fragment {
 
                 // Create custom dialog object
                 final Dialog dialog = new Dialog(getContext());
+                final Calendar myCalendar= Calendar.getInstance();
+
+                timeValid = false;
+                emailValid = false;
                 // Include reserve_dialog.xml file
                 dialog.setContentView(R.layout.reserve_dialog);
                 // Set dialog title
-                dialog.setTitle("Custom Dialog");
+                dialog.setTitle("Reservation");
 
                 // set values for custom dialog components - text, image and button
                 TextView text = (TextView) dialog.findViewById(R.id.textDialog);
+                emailValue = (EditText) dialog.findViewById(R.id.emailValue);
+                dateValue = (EditText) dialog.findViewById(R.id.dateValue);
+                timeValue = (EditText) dialog.findViewById(R.id.timeValue);
                 text.setText(name);
 
                 dialog.show();
 
-                Button declineButton = (Button) dialog.findViewById(R.id.declineButton);
+//                Date Picker
+                dateValue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Calendar mcurrentDate=Calendar.getInstance();
+                        int year=mcurrentDate.get(Calendar.YEAR);
+                        int month=mcurrentDate.get(Calendar.MONTH);
+                        int day=mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                        final DatePickerDialog   mDatePicker =new DatePickerDialog(dialog.getContext(), new DatePickerDialog.OnDateSetListener()
+                        {
+                            @Override
+                            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday)
+                            {
+                                dateValue.setText(new StringBuilder().append(month+1).append("-").append(day).append("-").append(year));
+                                int month_k=selectedmonth+1;
+
+                            }
+                        },year, month, day);
+                        // TODO Hide Future Date Here
+                        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+
+//                         TODO Hide Past Date Here
+//                          mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+                        mDatePicker.show();
+                    }
+                });
+
+//                Time Picker
+                timeValue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Calendar mcurrentTime = Calendar.getInstance();
+                        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                        int minute = mcurrentTime.get(Calendar.MINUTE);
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(dialog.getContext(),
+                                new TimePickerDialog.OnTimeSetListener() {
+
+                                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                                          int minute) {
+
+                                        timeValue.setText(hourOfDay + ":" + minute);
+                                    }
+                                }, hour, minute, false);
+                        timePickerDialog.show();
+                    }
+                });
+
+
+
+                Button cancel = (Button) dialog.findViewById(R.id.cancel);
+                Button submitB = (Button) dialog.findViewById(R.id.submitB);
                 // if decline button is clicked, close the custom dialog
-                declineButton.setOnClickListener(new View.OnClickListener() {
+                cancel.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         // Close dialog
+                        dialog.dismiss();
+                    }
+                });
+                // if Submit     button is clicked, close the custom dialog
+                submitB.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Close dialog
+//                        Log.d("time", String.valueOf(timeValue.getText()));
+                        if (!String.valueOf(timeValue.getText()).isEmpty()){
+                            String[] time_array = String.valueOf(timeValue.getText()).split("\\:");
+                            int hours = Integer.parseInt(time_array[0]);
+                            int mins = Integer.parseInt(time_array[1]);
+
+                            if ((hours<10) || (hours>=17 && mins>0)){
+                                Toast.makeText(getContext(), "Time should be between 10AM and 5PM", Toast.LENGTH_SHORT).show();
+                                timeValid = false;
+                            }
+                            else{
+                                timeValid = true;
+                            }
+                        }
+                        if(!String.valueOf(emailValue.getText()).isEmpty()){
+                            String emailToText = emailValue.getText().toString();
+                            if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
+                                emailValid = true;
+                            } else {
+                                Toast.makeText(getContext(), "Enter valid Email address !", Toast.LENGTH_SHORT).show();
+                                emailValid = false;
+                            }
+                        }
+                        if(emailValid && timeValid && !String.valueOf(emailValue.getText()).isEmpty()){
+                            // Submit Code
+                            Toast.makeText(getContext(), "Everything Valid", Toast.LENGTH_SHORT).show();
+                        }
+
                         dialog.dismiss();
                     }
                 });

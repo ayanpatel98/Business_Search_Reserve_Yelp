@@ -120,11 +120,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //                            JSONObject map_only =  business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates");
                             String lati = business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates").getString("latitude");
                             String longi = business_details_json.getJSONArray("response").getJSONObject(0).getJSONObject("coordinates").getString("longitude");
+                            String name = business_details_json.getJSONArray("response").getJSONObject(0).getString("name");
+                            String more_info = business_details_json.getJSONArray("response").getJSONObject(0).getString("more_info");
 //                          Toast.makeText(context, businessID, Toast.LENGTH_SHORT).show();
                             Intent businessIntent = new Intent(context, Business_Details.class);
                             businessIntent.putExtra("businessID", businessID);
                             businessIntent.putExtra("latitude", lati);
                             businessIntent.putExtra("longitude", longi);
+                            businessIntent.putExtra("name", name);
+                            businessIntent.putExtra("more_info", more_info);
                             context.startActivity(businessIntent);
 
                         } catch (JSONException e) {

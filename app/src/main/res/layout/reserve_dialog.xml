@@ -5,31 +5,138 @@
 
     <TextView
         android:id="@+id/textDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="89dp"
-        android:layout_above="@+id/declineButton"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="13dp"
+        android:layout_marginStart="0dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="154dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="-9dp"
-        android:textColor="#FFF" />
+        android:gravity="center"
+        android:text="Busi"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/declineButton"
-        android:layout_width="367dp"
-        android:layout_height="82dp"
-        android:layout_alignParentStart="true"
+        android:id="@+id/submitB"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/timeValue"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="102dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="28dp"
         android:text=" Submit " />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="158dp"
+        android:layout_height="155dp"
+        android:layout_below="@+id/timeValue"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="28dp"
+        android:layout_toStartOf="@+id/submitB"
+        android:text="CANCEL" />
+
+    <EditText
+        android:id="@+id/dateValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:ems="10"
+        android:hint="mm-dd-yyyy"
+        android:inputType="date"
+        android:minHeight="48dp"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateValue"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="0dp"
+        android:text="Start Time"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailValue"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="0dp"
+        android:text="Date"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textDialog"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="0dp"
+        android:text="Email"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/emailValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:ems="10"
+        android:hint="Email Id"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/timeValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:ems="10"
+        android:hint="hh:mm"
+        android:inputType="time"
+        android:minHeight="48dp"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
 </RelativeLayout>

@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Reset the theme to tht original
+        // because in the AndroidManifest.xml we had set the theme to custom theme "SplashCustom", ans we created the theme in values->themes->themes.xml
+        setTheme(R.style.Theme_Yelp);
         setContentView(R.layout.activity_main);
         submitButton = findViewById(R.id.submitButton);
         clearButton = findViewById(R.id.clearButton);
