@@ -1,15 +1,21 @@
 package com.example.yelp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -377,5 +383,32 @@ public class MainActivity extends AppCompatActivity {
             String text = tv.getText ().toString ();
             tv.setText ( Html.fromHtml (  text + " <font color=\"#ff0000\">" + "* " + "</font>" ) );
         }
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        // return true so that the menu pop up is opened
+        return true;
+    }
+
+    // this event will enable the back
+    // function to the button on press
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.reservation:
+                Intent reserveIntent = new Intent(this, ReserveScreen.class);
+                startActivity(reserveIntent);
+                // User chose the "Facebook" item, show the app settings UI...
+                // method to redirect to provided link
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://facebook.com/sharer/sharer.php?u="+more_info));
+//                startActivity(browserIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

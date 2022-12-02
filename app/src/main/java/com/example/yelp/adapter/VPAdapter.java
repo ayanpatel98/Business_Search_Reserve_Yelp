@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.yelp.Details;
 import com.example.yelp.MapFragment;
+import com.example.yelp.MapsFragmentGeo;
 import com.example.yelp.ReviewsFragment;
 
 public class VPAdapter extends FragmentStateAdapter {
@@ -35,7 +36,8 @@ public class VPAdapter extends FragmentStateAdapter {
                 return new Details(this.businessID);
             case 1:
 //                Log.d("vp", "1");
-                return new MapFragment(this.businessID, this.lati, this.longi);
+//                return new MapFragment(this.businessID, this.lati, this.longi);
+                return new MapsFragmentGeo(this.lati, this.longi);
             case 2:
 //                Log.d("vp", "2");
                 return new ReviewsFragment(this.businessID);

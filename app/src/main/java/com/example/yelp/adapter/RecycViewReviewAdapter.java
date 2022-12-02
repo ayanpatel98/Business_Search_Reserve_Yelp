@@ -16,8 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class RecycViewReviewAdapter  extends RecyclerView.Adapter<RecycViewReviewAdapter.ViewHolder> {
     private Context context;
     private JSONArray reviewsList;
@@ -82,10 +80,10 @@ public class RecycViewReviewAdapter  extends RecyclerView.Adapter<RecycViewRevie
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            name = itemView.findViewById(R.id.name);
-            rating = itemView.findViewById(R.id.rating);
-            review = itemView.findViewById(R.id.review);
-            date = itemView.findViewById(R.id.date);
+            name = itemView.findViewById(R.id.sr_no);
+            rating = itemView.findViewById(R.id.date_id);
+            review = itemView.findViewById(R.id.time_id);
+            date = itemView.findViewById(R.id.email_id);
         }
 
         @Override

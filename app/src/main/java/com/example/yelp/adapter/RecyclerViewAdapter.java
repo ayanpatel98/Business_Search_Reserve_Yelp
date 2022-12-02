@@ -2,7 +2,6 @@ package com.example.yelp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,10 +89,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            srNo = itemView.findViewById(R.id.name);
-            busiName = itemView.findViewById(R.id.rating);
-            rating = itemView.findViewById(R.id.review);
-            distanceTo = itemView.findViewById(R.id.date);
+            srNo = itemView.findViewById(R.id.sr_no);
+            busiName = itemView.findViewById(R.id.date_id);
+            rating = itemView.findViewById(R.id.time_id);
+            distanceTo = itemView.findViewById(R.id.email_id);
             busiImage = itemView.findViewById(R.id.busiImage);
         }
 

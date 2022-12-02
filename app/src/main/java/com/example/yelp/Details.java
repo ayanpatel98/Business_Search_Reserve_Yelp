@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class Details extends Fragment {
@@ -290,7 +292,16 @@ public class Details extends Fragment {
                         }
                         if(emailValid && timeValid && !String.valueOf(emailValue.getText()).isEmpty()){
                             // Submit Code
+                            SharedPreferences sharedPreferences=getContext().getSharedPreferences("MyPref",0);
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+
+                            editor.putString(businessID,name+"*"+dateValue.getText()+"*"+timeValue.getText()+"*"+emailValue.getText());
+                            editor.apply();
                             Toast.makeText(getContext(), "Everything Valid", Toast.LENGTH_SHORT).show();
+                            Map<String, ?> allEntries = sharedPreferences.getAll();
+                            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                                Log.d("local", entry.getKey() + ": " + entry.getValue().toString());
+                            }
                         }
 
                         dialog.dismiss();
