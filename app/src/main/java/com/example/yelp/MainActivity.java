@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -82,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
         // because in the AndroidManifest.xml we had set the theme to custom theme "SplashCustom", ans we created the theme in values->themes->themes.xml
         setTheme(R.style.Theme_Yelp);
         setContentView(R.layout.activity_main);
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+                findViewById(R.id.splashLayout).setVisibility(View.GONE);
+            }
+        }, 2000);
+
         submitButton = findViewById(R.id.submitButton);
         clearButton = findViewById(R.id.clearButton);
         keyword = findViewById(R.id.keyWord);
@@ -153,12 +164,35 @@ public class MainActivity extends AppCompatActivity {
                 if( TextUtils.isEmpty(keyword.getText())){
                     keyword.setError( "This field is required!" );
                 }
+                else if(TextUtils.isEmpty(distance.getText())){
+                    distance.setError( "This field is required!" );
+                }
                 else if(TextUtils.isEmpty(location.getText()) && location.isShown()){
                     location.setError( "This field is required!" );
                 }
                 else {
                     getLocationFromGoogle();
                 }
+            }
+        });
+
+//        Clear Click Listener
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detectLocation.setChecked(false);
+                latitude = "";
+                longitude = "";
+//                    Make location when auto detect is unchecked
+                location.setVisibility(View.VISIBLE);
+                location.setText("");
+                distance.setText("");
+                keyword.setText("");
+                categorySelected.setAdapter(adapter);
+
+                recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this,  new ArrayList<JSONObject>());
+                recyclerView.setAdapter(recyclerViewAdapter);
+
             }
         });
 
@@ -191,9 +225,17 @@ public class MainActivity extends AppCompatActivity {
                     keywordDropdown = items;
                     Log.d("auto", keywordDropdown.toString());
 //                    autocompleteAdapter.notifyDataSetChanged();
-                    keyword.setAdapter(autocompleteAdapter);
-//                    keyword.setThreshold(1);
-                    keyword.setAdapter(autocompleteAdapter);
+//                    keyword.setAdapter(autocompleteAdapter);
+                    keyword.setThreshold(0);
+
+                    final Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            keyword.setAdapter(autocompleteAdapter);
+                        }
+                    }, 500);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -388,7 +430,14 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+                inflater.inflate(R.menu.main_menu, menu);
+            }
+        }, 1400);
         // return true so that the menu pop up is opened
         return true;
     }

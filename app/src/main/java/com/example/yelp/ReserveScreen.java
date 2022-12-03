@@ -3,6 +3,7 @@ package com.example.yelp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,13 +46,13 @@ public class ReserveScreen extends AppCompatActivity {
     private RecycReserveAdapter recycReserveAdapter;
     private Context context;
     private ArrayList<String> storageList= new ArrayList<String>();
-    private FrameLayout frameCoordinator;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation_screen);
-        frameCoordinator = findViewById(R.id.frameCoordinator);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -75,6 +76,7 @@ public class ReserveScreen extends AppCompatActivity {
         recycReserveAdapter = new RecycReserveAdapter(this, storageList);
         recyclerView.setAdapter(recycReserveAdapter);
         recyclerView.setNestedScrollingEnabled(false);
+        enableSwipeToDeleteAndUndo();
     }
     private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
@@ -87,8 +89,8 @@ public class ReserveScreen extends AppCompatActivity {
                 recycReserveAdapter.removeItem(position);
 
 
-                Snackbar snackbar = Snackbar
-                        .make(frameCoordinator, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+//                Snackbar snackbar = Snackbar
+//                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
 //                snackbar.setAction("UNDO", new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
@@ -98,8 +100,8 @@ public class ReserveScreen extends AppCompatActivity {
 //                    }
 //                });
 
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
+//                snackbar.setActionTextColor(Color.YELLOW);
+//                snackbar.show();
 
             }
         };

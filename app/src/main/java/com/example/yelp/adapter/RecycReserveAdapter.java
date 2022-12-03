@@ -60,11 +60,12 @@ public class RecycReserveAdapter  extends RecyclerView.Adapter<RecycReserveAdapt
         editor.remove(key);
         storageList.remove(position);
         editor.apply();
-        notifyItemRemoved(position);
+//        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
 //    public void restoreItem(String item, int position) {
-//        data.add(position, item);
+////        data.add(position, item);
 //        notifyItemInserted(position);
 //    }
 

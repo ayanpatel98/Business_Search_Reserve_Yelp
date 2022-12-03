@@ -42,7 +42,7 @@ public class MapsFragmentGeo extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             LatLng sydney = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
             googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15f));
         }
     };
@@ -54,6 +54,7 @@ public class MapsFragmentGeo extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         Log.d("construct1", "1111");
         return inflater.inflate(R.layout.fragment_maps_geo, container, false);
+//        return null;
     }
 
     @Override
