@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 //Do something after 100ms
                 findViewById(R.id.splashLayout).setVisibility(View.GONE);
             }
-        }, 2000);
+        }, 2300);
 
         submitButton = findViewById(R.id.submitButton);
         clearButton = findViewById(R.id.clearButton);
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void afterTextChanged(Editable s) {
-                retrieveData(s);
+                retrieveData(s.toString());
             }
         });
 
@@ -201,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
         showTextViewsAsMandatory ( catTitle);
     }
 
-    protected void retrieveData(Editable s){
+
+    protected void retrieveData(String s){
         RequestQueue requestQueue;
         StringRequest stringRequest;
         // RequestQueue initialized
@@ -226,16 +228,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("auto", keywordDropdown.toString());
 //                    autocompleteAdapter.notifyDataSetChanged();
 //                    keyword.setAdapter(autocompleteAdapter);
-                    keyword.setThreshold(0);
+                    keyword.setThreshold(1);
 
-                    final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Do something after 100ms
-                            keyword.setAdapter(autocompleteAdapter);
-                        }
-                    }, 500);
+//                    final Handler handler = new Handler(Looper.getMainLooper());
+
+                    keyword.setAdapter(autocompleteAdapter);
+                    autocompleteAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -1,5 +1,7 @@
 package com.example.yelp.adapter;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yelp.R;
+import com.example.yelp.ReserveScreen;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +28,7 @@ public class RecycReserveAdapter  extends RecyclerView.Adapter<RecycReserveAdapt
     private ArrayList<String> storageList= new ArrayList<String>();
     String localRow;
     String[] values = new String[]{};
+    View view;
 
     public RecycReserveAdapter(Context context, ArrayList<String> storageList) {
         this.context = context;
@@ -34,7 +38,7 @@ public class RecycReserveAdapter  extends RecyclerView.Adapter<RecycReserveAdapt
     @NonNull
     @Override
     public RecycReserveAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(this.context).inflate(R.layout.reserve_row, parent, false);
+        view = LayoutInflater.from(this.context).inflate(R.layout.reserve_row, parent, false);
         return new ViewHolder(view);
     }
 

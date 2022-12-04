@@ -27,6 +27,11 @@ public class MapsFragmentGeo extends Fragment {
         Log.d("construct1", this.latitude+this.longitude);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**

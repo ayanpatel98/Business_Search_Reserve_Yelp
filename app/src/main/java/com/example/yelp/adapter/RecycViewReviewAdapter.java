@@ -48,7 +48,7 @@ public class RecycViewReviewAdapter  extends RecyclerView.Adapter<RecycViewRevie
         }
 
         try {
-            holder.rating.setText(current_review.getString("rating"));
+            holder.rating.setText("Rating :" + current_review.getString("rating"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

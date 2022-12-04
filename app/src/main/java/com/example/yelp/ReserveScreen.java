@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,6 +44,7 @@ public class ReserveScreen extends AppCompatActivity {
 
     private String businessID;
     private RecyclerView recyclerView;
+    private TextView noBooking;
     private RecycReserveAdapter recycReserveAdapter;
     private Context context;
     private ArrayList<String> storageList= new ArrayList<String>();
@@ -53,6 +55,9 @@ public class ReserveScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservation_screen);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        noBooking = findViewById(R.id.noBooking);
+        noBooking.setVisibility(View.GONE);
+//        noBooking.setVisibility(View.VISIBLE);
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -73,11 +78,16 @@ public class ReserveScreen extends AppCompatActivity {
             storageList.add(temp);
         }
 
+        if(sharedPreferences.getAll().isEmpty()){
+            noBooking.setVisibility(View.VISIBLE);
+        }
+
         recycReserveAdapter = new RecycReserveAdapter(this, storageList);
         recyclerView.setAdapter(recycReserveAdapter);
         recyclerView.setNestedScrollingEnabled(false);
         enableSwipeToDeleteAndUndo();
     }
+
     private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
@@ -87,6 +97,10 @@ public class ReserveScreen extends AppCompatActivity {
                 final String item = recycReserveAdapter.getData().get(position);
 
                 recycReserveAdapter.removeItem(position);
+
+                if (recycReserveAdapter.getItemCount()==0){
+                    noBooking.setVisibility(View.VISIBLE);
+                }
 
 
 //                Snackbar snackbar = Snackbar

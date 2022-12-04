@@ -74,6 +74,7 @@ public class Details extends Fragment {
 
     private boolean emailValid = false;
     private boolean timeValid = false;
+    private int hoursToValidate = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -244,8 +245,13 @@ public class Details extends Fragment {
 
                                     public void onTimeSet(TimePicker view, int hourOfDay,
                                                           int minute) {
+                                        int tempHour = hourOfDay;
+                                        hoursToValidate = hourOfDay;
+                                        if(hourOfDay>12){
+                                            tempHour = hourOfDay-12;
+                                        }
 
-                                        timeValue.setText(hourOfDay + ":" + minute);
+                                        timeValue.setText(tempHour + ":" + minute);
                                     }
                                 }, hour, minute, false);
                         timePickerDialog.show();
@@ -273,7 +279,7 @@ public class Details extends Fragment {
                             int hours = Integer.parseInt(time_array[0]);
                             int mins = Integer.parseInt(time_array[1]);
 
-                            if ((hours<10) || (hours>=17 && mins>0)){
+                            if ((hoursToValidate<10) || (hoursToValidate>=17 && mins>0)){
                                 Toast.makeText(getContext(), "Time should be between 10AM and 5PM", Toast.LENGTH_SHORT).show();
                                 timeValid = false;
                             }
