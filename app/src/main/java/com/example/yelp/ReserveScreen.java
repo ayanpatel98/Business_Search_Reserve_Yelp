@@ -103,8 +103,8 @@ public class ReserveScreen extends AppCompatActivity {
                 }
 
 
-//                Snackbar snackbar = Snackbar
-//                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Removing Existing Reservation.", Snackbar.LENGTH_LONG);
 //                snackbar.setAction("UNDO", new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
@@ -115,7 +115,7 @@ public class ReserveScreen extends AppCompatActivity {
 //                });
 
 //                snackbar.setActionTextColor(Color.YELLOW);
-//                snackbar.show();
+                snackbar.show();
 
             }
         };

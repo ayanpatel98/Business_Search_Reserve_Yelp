@@ -48,7 +48,7 @@ public class MapsFragmentGeo extends Fragment {
             LatLng sydney = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
             googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15f));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,12f));
         }
     };
 

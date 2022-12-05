@@ -24,7 +24,7 @@ tools:context=".MainActivity">
             android:gravity="center_horizontal"
             android:paddingTop="90dp"
             android:text="No Bookings found!"
-            android:textColor="#FF0001"
+            android:textColor="@android:color/holo_red_dark"
             android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView

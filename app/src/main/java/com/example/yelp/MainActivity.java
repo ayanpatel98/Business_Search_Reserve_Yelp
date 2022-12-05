@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     public EditText location;
     public CheckBox detectLocation;
     public Spinner categorySelected ;
+    public TextView noResultTable ;
 //    public Object[] categoryObject;
     public TextView catTitle;
     public List<String> keywordDropdown = new ArrayList<String>();
@@ -102,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         detectLocation = findViewById(R.id.detectLocation);
         categorySelected =  findViewById(R.id.categoryDropdown);
         catTitle = findViewById(R.id.catTitle);
+        noResultTable = findViewById(R.id.noResultTable);
+        noResultTable.setVisibility(View.GONE);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -186,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 longitude = "";
 //                    Make location when auto detect is unchecked
                 location.setVisibility(View.VISIBLE);
+                noResultTable.setVisibility(View.GONE);
                 location.setText("");
                 distance.setText("");
                 keyword.setText("");
@@ -223,6 +227,10 @@ public class MainActivity extends AppCompatActivity {
                         items.add(results.getJSONObject(i).getString("text"));
                     }
 
+                    if (results.length()==0){
+                        items.add(" ");
+                    }
+
                     autocompleteAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.select_dialog_item, items);
                     keywordDropdown = items;
                     Log.d("auto", keywordDropdown.toString());
@@ -254,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
         String currentCategory = categorySelected.getSelectedItem().toString();
         String radiusPayload;
         ArrayList<JSONObject> businesses = new ArrayList<JSONObject>();
+        noResultTable.setVisibility(View.GONE);
 
         if (!distance.getText().toString().trim().isEmpty()){
             radiusPayload = String.valueOf(Integer.parseInt(distance.getText().toString().trim())*1609);
@@ -303,7 +312,10 @@ public class MainActivity extends AppCompatActivity {
                         recyclerView.setNestedScrollingEnabled(false);
                     }
                     else {
-                        Toast.makeText(MainActivity.this, "No Records Found!", Toast.LENGTH_SHORT).show();
+                        recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, new ArrayList<>());
+                        recyclerView.setAdapter(recyclerViewAdapter);
+                        recyclerView.setNestedScrollingEnabled(false);
+                        noResultTable.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -347,7 +359,6 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject geoLatlong = geometry.getJSONObject("geometry").getJSONObject("location");
                             latitude = geoLatlong.getString("lat");
                             longitude = geoLatlong.getString("lng");
-                            Toast.makeText(MainActivity.this, "Correct Location!", Toast.LENGTH_SHORT).show();
                             getTable(keywordValid, distanceValid, locationValid);
                         }
 

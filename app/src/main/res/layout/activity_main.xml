@@ -27,10 +27,10 @@
         android:id="@+id/keyWord"
         android:layout_width="211dp"
         android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:hint="keyWord"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleHome" />
 
@@ -38,13 +38,13 @@
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="Distance"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/keyWord" />
 
@@ -57,7 +57,7 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryDropdown" />
 
@@ -69,7 +69,6 @@
         android:text="Business Search"
         android:textColor="@color/black"
         android:textSize="30dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.313"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +82,6 @@
         android:text="Results"
         android:textColor="@color/black"
         android:textSize="30dp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.308"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,11 +91,11 @@
         android:id="@+id/catTitle"
         android:layout_width="125dp"
         android:layout_height="26dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Category"
         android:textColor="#E800FF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintHorizontal_bias="0.078"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/distance" />
 
@@ -108,7 +106,7 @@
         android:layout_marginTop="4dp"
         android:dropDownHeight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/catTitle"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -117,7 +115,7 @@
         android:id="@+id/clearButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="108dp"
         android:text="Clear"
         app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Submit"
         app:layout_constraintEnd_toStartOf="@+id/clearButton"
         app:layout_constraintHorizontal_bias="0.0"
@@ -139,15 +137,17 @@
         android:id="@+id/detectLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="4dp"
         android:buttonTint="#E800FF"
         android:text="Auto-detect my location"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="392dp"
+        android:id="@+id/nestedScrollView"
+        android:layout_width="390dp"
         android:layout_height="214dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
@@ -155,7 +155,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultTitle"
+        app:layout_constraintTop_toBottomOf="@+id/noResultTable"
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -163,5 +163,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/noResultTable"
+        android:layout_width="132dp"
+        android:layout_height="33dp"
+        android:text="No Results Found!"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

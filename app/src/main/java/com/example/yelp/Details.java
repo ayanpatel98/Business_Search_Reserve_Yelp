@@ -37,10 +37,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -131,7 +130,7 @@ public class Details extends Fragment {
                     if (status.equals("noStatus")) {
                         statusValue.setText("N/A");
                     } else if (status=="true") {
-                        statusValue.setText("Open");
+                        statusValue.setText("Open Now");
                         statusValue.setTextColor(Color.GREEN);
                     } else if (status=="false") {
                         statusValue.setText("Closed");
@@ -260,8 +259,9 @@ public class Details extends Fragment {
 
 
 
-                Button cancel = (Button) dialog.findViewById(R.id.cancel);
-                Button submitB = (Button) dialog.findViewById(R.id.submitB);
+                TextView cancel = (TextView) dialog.findViewById(R.id.cancel);
+                TextView submitB = (TextView) dialog.findViewById(R.id.submit);
+//                Button submitB = (Button) dialog.findViewById(R.id.submitB);
                 // if decline button is clicked, close the custom dialog
                 cancel.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -292,7 +292,7 @@ public class Details extends Fragment {
                             if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
                                 emailValid = true;
                             } else {
-                                Toast.makeText(getContext(), "Enter valid Email address !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "InValid Email Address.", Toast.LENGTH_SHORT).show();
                                 emailValid = false;
                             }
                         }
@@ -303,7 +303,7 @@ public class Details extends Fragment {
 
                             editor.putString(businessID,name+"*"+dateValue.getText()+"*"+timeValue.getText()+"*"+emailValue.getText());
                             editor.apply();
-                            Toast.makeText(getContext(), "Everything Valid", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Reservation Booked", Toast.LENGTH_SHORT).show();
                             Map<String, ?> allEntries = sharedPreferences.getAll();
                             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
                                 Log.d("local", entry.getKey() + ": " + entry.getValue().toString());
