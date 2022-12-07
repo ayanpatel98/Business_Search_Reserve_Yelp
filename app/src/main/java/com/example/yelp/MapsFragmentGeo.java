@@ -58,8 +58,8 @@ public class MapsFragmentGeo extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Log.d("construct1", "1111");
-        return inflater.inflate(R.layout.fragment_maps_geo, container, false);
-//        return null;
+//        return inflater.inflate(R.layout.fragment_maps_geo, container, false);
+        return null;
     }
 
     @Override

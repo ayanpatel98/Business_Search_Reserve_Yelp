@@ -49,7 +49,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.srNo.setText(String.valueOf(position+1));
         try {
-            holder.busiName.setText(business.getString("name"));
+            if (business.getString("name").equals("Residence Inn by Marriott New York Downtown Manhattan")){
+                holder.busiName.setText("Residence Inn by Marriott New York Downtown");
+            }
+            else if (business.getString("name").startsWith("Courtyard by Marriott New York Manhattan")){
+                holder.busiName.setText("Courtyard by Marriott");
+            }
+            else{
+                holder.busiName.setText(business.getString("name"));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
