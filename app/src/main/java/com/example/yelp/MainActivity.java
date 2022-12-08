@@ -446,7 +446,7 @@ public class MainActivity extends AppCompatActivity {
                 //Do something after 100ms
                 inflater.inflate(R.menu.main_menu, menu);
             }
-        }, 1400);
+        }, 1200);
         // return true so that the menu pop up is opened
         return true;
     }

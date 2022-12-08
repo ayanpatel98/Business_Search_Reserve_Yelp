@@ -250,7 +250,7 @@ public class Details extends Fragment {
                                             tempHour = hourOfDay-12;
                                         }
 
-                                        timeValue.setText(tempHour + ":" + minute);
+                                        timeValue.setText(hourOfDay + ":" + minute);
                                     }
                                 }, hour, minute, false);
                         timePickerDialog.show();

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -66,7 +65,7 @@
         android:id="@+id/titleHome"
         android:layout_width="325dp"
         android:layout_height="54dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:text="Business Search"
         android:textColor="@color/black"
         android:textSize="30dp"
@@ -142,7 +141,7 @@
         android:layout_marginTop="4dp"
         android:buttonTint="#E800FF"
         android:text="Auto-detect my location"
-        android:textSize="13sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
@@ -150,7 +149,7 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="390dp"
         android:layout_height="214dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginBottom="18dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -158,7 +157,7 @@
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultTitle"
-        app:layout_constraintVertical_bias="0.281">
+        app:layout_constraintVertical_bias="0.295">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
