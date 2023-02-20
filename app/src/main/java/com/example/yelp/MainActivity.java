@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 location.setVisibility(View.VISIBLE);
                 noResultTable.setVisibility(View.GONE);
                 location.setText("");
+                location.setError(null);
                 distance.setText("");
                 keyword.setText("");
                 categorySelected.setAdapter(adapter);
@@ -446,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
                 //Do something after 100ms
                 inflater.inflate(R.menu.main_menu, menu);
             }
-        }, 1200);
+        }, 1400);
         // return true so that the menu pop up is opened
         return true;
     }
